@@ -1,0 +1,23 @@
+---
+title: "PreliminaryEDA"
+author: "Yan Gong & Xigang Zhang"
+date: "04/07/2020"
+output: html_document
+---
+
+# Guiding Question (Research Question)
+
+
+
+# Acquainted with data sources
+
+Where did you find them?
+Who collected/maintains them?
+When & Why were they originally collected?
+What does a case represent in each data source, and how many total cases are available?
+
+# Intuition related to the research question
+
+### Primary data
+
+### Other data sources 
