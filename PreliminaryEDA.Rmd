@@ -2,22 +2,49 @@
 title: "PreliminaryEDA"
 author: "Yan Gong & Xigang Zhang"
 date: "04/07/2020"
-output: html_document
+output: html_notebook
 ---
 
 # Guiding Question (Research Question)
-
-
-
+```{r}
+#A:To identify the poetinal demographic risk factor towards drug use among 20-49 years old young adults.
+```
 # Acquainted with data sources
-
-Where did you find them?
-Who collected/maintains them?
-When & Why were they originally collected?
-What does a case represent in each data source, and how many total cases are available?
-
+```{r}
+#Where did you find them?
+#A:I find them from "Centers for Disease Control and Prevetion" (CDC) statistics department called "National Center of Health Statistics"(NCHS) named "National Health and Nutrition Examination Survey"(NHANES)
+```
+# Who collected/maintains them?
+```{r}
+#A:CDC collected them.
+```
+```{r}
+#When & Why were they originally collected?
+#A:They collected them from year 2017-2018. The reason for CDC collect the data is because NHANES is a stuides designed to asses the thealth and nutrional stauts of adults and children in the U.S the survey is unique in combining interviews with physical and lavoraatory examintations. 
+```
+```{r}
+#What does a case represent in each data source, and how many total cases are available?
+#A:In demographic dataset(primary dataset), the case represents all the demographic information collected from each respondents in year 2017-2018. While in Drug use dataset(other source data), the case represents all the factor(predictor) variables information collected from each respondents in year 2017-2018
+```
 # Intuition related to the research question
+```{r}
+library(haven)
+demographic_2017_2018 <- read_dta("demographic 2017-2018.dta")
+View(demographic_2017_2018)
+```
 
+```{r}
+
+```
+
+```{r}
+
+```
 ### Primary data
-
+```{r}
+#"demographic 2017-2018.dta"
+```
 ### Other data sources 
+```{r}
+#"druguse 2017-2018.dta"
+```
