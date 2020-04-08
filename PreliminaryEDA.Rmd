@@ -49,17 +49,50 @@ In demographic dataset (primary dataset), the case represents all the demographi
 
 ### Informative plots and summary statistics 
 
-```{r}
+```{r fig.height = 10, fig.width = 8}
+# Import tables
 demographic_20172018 <- read_dta("demographic_20172018.dta")
 druguse_20172018 <- read_dta("druguse_20172018.dta")
+
+# Generate Tables
 demographic_20172018 %>%
-  group_by(seqn) %>%
-  summarise(total = sum(dmdfmsiz))
+  group_by(dmdfmsiz, ridreth3) %>%
+  summarise(total = n())
+druguse_20172018 %>%
+  group_by(duq240) %>%
+  summarise(total = n())
+
+# Generate plots
+demographic_20172018 %>%
+  group_by(dmdfmsiz, ridreth3) %>%
+  summarise(total = n()) %>%
+  ggplot(aes(x = dmdfmsiz, y = total, fill = ridreth3)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Number of People in Family", 
+       y = "Number of Families", 
+       fill = "Race", 
+       title = "Distribution of Interviewers in Races and Number of People in Family")
+druguse_20172018 %>%
+  group_by(duq240) %>%
+  summarise(total = n()) %>%
+  ggplot(aes(x = duq240, y = total)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Times ever Used Cocaine/heroin/methamphetamine", 
+       y = "Number of People")
 ```
 
 ### Preliminary observations and intuition about the research question
 
+We could easily find that 
+```{r}
+# Merged dataset
+merged_20172018 <- read_dta("merged_20172018.dta")
+merged_20172018
 
+# Inner join drug used and demographic datasets
+druguse_20172018 %>%
+  inner_join(demographic_20172018, by = c("seqn"))
+```
 
 # Two Data Sources
 
