@@ -83,7 +83,7 @@ druguse_20172018 %>%
 
 ### Preliminary observations and intuition about the research question
 
-We could easily find that 
+We could easily find that the distribution of number of People in Family in U.S is normal distribtuion for mean = 4. Moreover, the race factor towards number of People in Family is not significant as there is no strong interaction between these two. For the drug use part, we can Briefly saying that most of the U.S citizens have the experience for drug use, the range is from 0.5 to 2.5. 
 ```{r}
 # Merged dataset
 merged_20172018 <- read_dta("merged_20172018.dta")
