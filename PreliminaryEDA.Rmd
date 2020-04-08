@@ -20,16 +20,34 @@ library(foreign)
 
 # Guiding Question (Research Question)
 
+To identify the potential demographic risk factor towards drug use among 20-49 years old young adults. What is the potential risk of abuse of drug among these people in US? 
 
 
-# Acquainted with data sources
+# Acquainted with Data Sources
 
-Where did you find them?
-Who collected/maintains them?
-When & Why were they originally collected?
-What does a case represent in each data source, and how many total cases are available?
+### Where did you find them?
 
-# Intuition related to the research question
+NHANES Questionnaires, Datasets, and Related Documentation of National Health and Nutrition Examination Survey (NHANES)
+
+Link: <https://wwwn.cdc.gov/nchs/nhanes/default.aspx>
+
+
+### Who collected/maintains them?
+
+National Center of Health Statistics (NCHS) under the Centers for Disease Control and Prevetion (CDC). 
+
+### When & Why were they originally collected?
+
+They collected them from year 2017-2018. The reason for CDC collect the data is because NHANES is a stuides designed to asses the thealth and nutrional stauts of adults and children in the U.S the survey is unique in combining interviews with physical and lavoraatory examintations. 
+
+### What does a case represent in each data source, and how many total cases are available?
+
+In demographic dataset (primary dataset), the case represents all the demographic information collected from each respondents in year 2017-2018, 9254 cases are available; in drug use dataset (other source data), the case represents all the factor (predictor) variables information collected from each respondents in year 2017-2018, 4572 cases are available. 
+
+
+# Intuition Related to the Research Question
+
+### Informative plots and summary statistics 
 
 ```{r}
 demographic_20172018 <- read_dta("demographic_20172018.dta")
@@ -39,8 +57,20 @@ demographic_20172018 %>%
   summarise(total = sum(dmdfmsiz))
 ```
 
+### Preliminary observations and intuition about the research question
+
+
+
 # Two Data Sources
 
 ### Primary data
 
+The "demographic_20172018.dta" DTA file in the repository, which is the demographic data of NHANES 2017-2018. 
+
+Link: <https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2017> (XPT Format)
+
 ### Other data sources 
+
+The "druguse_20172018.dta" DTA file in the repository, which is the drug use data of NHANES 2017-2018. 
+
+Link: <https://wwwn.cdc.gov/nchs/nhanes/Search/DataPage.aspx?Component=Questionnaire&CycleBeginYear=2017> (XPT Format)
