@@ -2,8 +2,21 @@
 title: "PreliminaryEDA"
 author: "Yan Gong & Xigang Zhang"
 date: "04/07/2020"
-output: html_document
+output: html_notebook
 ---
+
+# Front Matter
+
+```{r message = FALSE, warning = FALSE, paged.print = FALSE}
+# clean up workspace environment
+rm(list = ls())
+
+# all packages used for the assignment
+library(mosaic)
+library(tidyverse)
+library(DataComputing)
+library(foreign)
+```
 
 # Guiding Question (Research Question)
 
@@ -17,6 +30,16 @@ When & Why were they originally collected?
 What does a case represent in each data source, and how many total cases are available?
 
 # Intuition related to the research question
+
+```{r}
+demographic_20172018 <- read_dta("demographic_20172018.dta")
+druguse_20172018 <- read_dta("druguse_20172018.dta")
+demographic_20172018 %>%
+  group_by(seqn) %>%
+  summarise(total = sum(dmdfmsiz))
+```
+
+# Two Data Sources
 
 ### Primary data
 
