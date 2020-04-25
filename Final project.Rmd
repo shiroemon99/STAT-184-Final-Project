@@ -1,0 +1,102 @@
+---
+title: "Final project"
+author: "Xigang Zhang"
+date: "2020/4/24"
+output: html_notebook
+---
+
+```{r message = FALSE, warning = FALSE, paged.print = FALSE}
+# clean up workspace environment
+rm(list = ls())
+
+# all packages used for the assignment
+library(mosaic)
+library(tidyverse)
+library(DataComputing)
+library(foreign)
+```
+
+```{r fig.height = 10, fig.width = 8}
+# Import tables Line 21, 22
+demographic_20172018 <- read_dta("demographic_20172018.dta")
+druguse_20172018 <- read_dta("druguse_20172018.dta")
+```
+
+```{r}
+#Inspected data Line 27, 28
+str(demographic_20172018)
+glimpse(druguse_20172018)
+```
+
+```{r}
+#(A)General Data Wrangling Line 33-38 using "group_by" and "summarise"
+demographic_20172018 %>%
+  group_by(dmdfmsiz, ridreth3) %>%
+  summarise(total = n())
+druguse_20172018 %>%
+  group_by(duq240) %>%
+  summarise(total = n())
+
+```
+
+```{r}
+#(B)Join operation Line 45, Inner join drug used and demographic datasets
+druguse_20172018 %>%
+  inner_join(demographic_20172018, by = c("seqn"))
+```
+
+```{r}
+#(C)Gather operation Line 53
+library(tidyr)
+library(devtools)
+library(usethis)
+gather(demographic_20172018, "riagendr","dmdborn4", 2:3)
+```
+
+```{r}
+#(D)Regular expressions Subsetting strings Line 60
+
+Race <- c("ridreth1", "ridreth3")
+str_sub(Race, -3,)
+
+```
+
+```{r}
+#(E)Reduction/transofrmation functions Line 66
+rank(druguse_20172018$duq210)
+
+```
+
+```{r}
+#Data Visualization (B)use of mulitiple asethetics, Line 75-77 (C)layered graphics, Line 84-87
+demographic_20172018 %>%
+  group_by(dmdfmsiz, ridreth3) %>%
+  summarise(total = n()) %>%
+  ggplot(aes(x = dmdfmsiz, y = total, fill = ridreth3)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Number of People in Family", 
+       y = "Number of Families", 
+       fill = "Race", 
+       title = "Distribution of Interviewers in Races and Number of People in Family")
+druguse_20172018 %>%
+  group_by(duq240) %>%
+  summarise(total = n()) %>%
+  ggplot(aes(x = duq240, y = total)) + 
+  geom_bar(stat = "identity") + 
+  labs(x = "Times ever Used Cocaine/heroin/methamphetamine", 
+       y = "Number of People")
+```
+
+```{r}
+#(A) use of mulitple diiferent geoms Line 96
+druguse_20172018 %>%
+  group_by(duq210) %>%
+  summarise(total = n ()) %>%
+  ggplot(aes(x = duq210, y = total)) +
+  geom_point(stat = "identity") + geom_line() +
+  xlim(0,50) +
+  ylim(0,400) +
+  labs(x = "Age first tried Marijunana",
+       y = "Number of People")
+
+```
