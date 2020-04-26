@@ -26,7 +26,7 @@ Research question: Finding out the distribution of drugeuse towards different ki
 
 ##### Import tables: Line 30-31
 
-```{r fig.height = 10, fig.width = 8}
+```{r}
 demographic_20172018 <- read_dta("demographic_20172018.dta")
 druguse_20172018 <- read_dta("druguse_20172018.dta")
 ```
@@ -36,15 +36,17 @@ Data tables (datasets) are obtained from NHANES Questionnaires, Datasets, and Re
 ##### Inspected data: Line 39-40
 
 ```{r}
-str(demographic_20172018)
-glimpse(druguse_20172018)
+#str(demographic_20172018)
+#glimpse(druguse_20172018)
+head(demographic_20172018, 6)
+head(druguse_20172018, 6)
 ```
 
 By inspecting data intake, we could find that all important variables are accompanied with a unique ID. We then need to rename variables by their original names in visualization process. It's the significant step checking for latter inner_join step, as the sequence variables is the only same varaibles that two dataset both have.
 
 ### Data Wrangling
 
-##### (A) General Data Wrangling (using `group_by()` and `summarise()`): Line 50-55 
+##### (A) General Data Wrangling (using `group_by()` and `summarise()`): Line 52-57
 
 ```{r}
 demographic_20172018 %>%
@@ -57,7 +59,7 @@ druguse_20172018 %>%
 
 We use `group_by()` and `summarise()` to find the total number in each group with different races/Hispanic origin and total number of people in the family for demographic dataset and the number in each group with different times ever used with cocaine/heroin/methamphetamine for drug use dataset. 
 
-##### (B) Joins for multiple data tables: Line 63-64
+##### (B) Joins for multiple data tables: Line 65-66
 
 ```{r}
 druguse_20172018 %>%
@@ -66,7 +68,7 @@ druguse_20172018 %>%
 
 We considered to use `inner_join()` to join the demographic and drug use datasets by respondent sequence number to see if any respondents took both surveys so that we could find some relationships between drug use and any demographic factors. 
 
-##### (C) Stack varibales by `gather()`: Line 71-75
+##### (C) Stack varibales by `gather()`: Line 74-77
 
 ```{r}
 library(tidyr)
@@ -77,7 +79,7 @@ gather(demographic_20172018, "riagendr","dmdborn4", 2:3)
 
 We stacked two variables, gender and country of birth, to reduce number of columns in the table and make people read our table easier. 
 
-##### (D) Regular expressions: Line 83-84
+##### (D) Regular expressions: Line 85-86
 
 ```{r}
 Race <- c("ridreth1", "ridreth3")
@@ -86,17 +88,17 @@ str_sub(Race, -3,)
 
 To make people read our sorted tables better, we considered to use `str_sub()` to recycle variable names to a shorter length. As "ridre" just some meaningless string which won't effect the unique of each Race varaible.
 
-##### (E) Reduction/transformation functions: Line 92
+##### (E) Reduction/transformation functions: Line 94
 
 ```{r}
-rank(druguse_20172018$duq220u)
+head(rank(druguse_20172018$duq220u), 100)
 ```
 
 We could rank the varible "used marijunana unit" (duq220q) to see the smallest to the largest unit of marijunana used. 
 
 ### Data Visualization
 
-##### Use of multiple geoms: Line 106
+##### Use of multiple geoms: Line 108
 
 ```{r}
 druguse_20172018 %>%
@@ -112,7 +114,7 @@ druguse_20172018 %>%
 
 By using two different goems `geom_point()` and `geom_line()`, the graph we obtained shows much more information. Within geom_point we can clearly see that age 10-20 is most people first tried Marijunana, within the geom_line function, we can better understand the trend of the age first tried Marijunana for us to futher know the overall situation of 2017-2018 druguse.
 
-##### (B) Use of multiple aesthetics: Line 121, 137
+##### (B) Use of multiple aesthetics: Line 123, 139
 
 ```{r}
 demographic_20172018 %>%
@@ -128,7 +130,7 @@ demographic_20172018 %>%
 
 By using multiple asethetics which in here we using color fullfill the "Race" variable within X-axis represent the number of people in family to see the preference for each "Race" toward how many people would like to have in each Family, for us to better understand the distribution of the Race and see does it have correlation with drug use.
 
-##### (C) Layered graphics: Line 139
+##### (C) Layered graphics: Line 141
 
 ```{r}
 druguse_20172018 %>%
