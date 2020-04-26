@@ -1,9 +1,11 @@
 ---
 title: "Final project"
-author: "Xigang Zhang"
-date: "2020/4/24"
+author: "Xigang Zhang, Yan Gong"
+date: "04/24/2020"
 output: html_notebook
 ---
+
+# Front Matter
 
 ```{r message = FALSE, warning = FALSE, paged.print = FALSE}
 # clean up workspace environment
@@ -13,62 +15,105 @@ rm(list = ls())
 library(mosaic)
 library(tidyverse)
 library(DataComputing)
-library(foreign)
+library(haven)
 ```
 
+# Main Part
+
+### Data Access
+
+##### Import tables: Line 28-29
+
 ```{r fig.height = 10, fig.width = 8}
-# Import tables Line 21, 22
 demographic_20172018 <- read_dta("demographic_20172018.dta")
 druguse_20172018 <- read_dta("druguse_20172018.dta")
 ```
 
+Data tables (datasets) are obtained from NHANES Questionnaires, Datasets, and Related Documentation of National Health and Nutrition Examination Survey (NHANES). The demographic and drug use datasets are selected. 
+
+##### Inspected data: Line 37-38
+
 ```{r}
-#Inspected data Line 27, 28
 str(demographic_20172018)
 glimpse(druguse_20172018)
 ```
 
+By inspecting data intake, we could find that all important variables are accompanied with a unique ID. We then need to rename variables by their original names in visualization process. 
+
+### Data Wrangling
+
+##### (A) General Data Wrangling (using `group_by()` and `summarise()`): Line 48-53 
+
 ```{r}
-#(A)General Data Wrangling Line 33-38 using "group_by" and "summarise"
 demographic_20172018 %>%
   group_by(dmdfmsiz, ridreth3) %>%
   summarise(total = n())
 druguse_20172018 %>%
   group_by(duq240) %>%
   summarise(total = n())
-
 ```
 
+We use `group_by()` and `summarise()` to find the total number in each group with different races/Hispanic origin and total number of people in the family for demographic dataset and the number in each group with different times ever used with cocaine/heroin/methamphetamine for drug use dataset. 
+
+##### (B) Joins for multiple data tables: Line 61-62
+
 ```{r}
-#(B)Join operation Line 45, Inner join drug used and demographic datasets
 druguse_20172018 %>%
   inner_join(demographic_20172018, by = c("seqn"))
 ```
 
+We considered to use `inner_join()` to join the demographic and drug use datasets by respondent sequence number to see if any respondents took both surveys so that we could find some relationships between drug use and any demographic factors. 
+
+##### (C) Stack varibales by `gather()`: Line 70-73
+
 ```{r}
-#(C)Gather operation Line 53
 library(tidyr)
 library(devtools)
 library(usethis)
 gather(demographic_20172018, "riagendr","dmdborn4", 2:3)
 ```
 
-```{r}
-#(D)Regular expressions Subsetting strings Line 60
+We stacked two variables, gender and country of birth, to reduce number of columns in the table and make people read our table easier. 
 
+##### (D) Regular expressions: Line 81-82
+
+```{r}
 Race <- c("ridreth1", "ridreth3")
 str_sub(Race, -3,)
-
 ```
 
+To make people read our sorted tables better, we considered to use `str_sub()` to recycle variable names to a shorter length. 
+
+##### (E) Reduction/transformation functions: Line 90 
+
 ```{r}
-#(E)Reduction/transofrmation functions Line 66
 rank(druguse_20172018$duq210)
-
 ```
 
+We could rank the varible "age when first tried marijuana" (duq210) to see the earliest or oldest age. 
+
+### Data Visualization
+
+##### Use of multiple geoms: Line 104
+
 ```{r}
-#Data Visualization (B)use of mulitiple asethetics, Line 75-77 (C)layered graphics, Line 84-87
+druguse_20172018 %>%
+  group_by(duq210) %>%
+  summarise(total = n ()) %>%
+  ggplot(aes(x = duq210, y = total)) +
+  geom_point(stat = "identity") + geom_line() +
+  xlim(0,50) +
+  ylim(0,400) +
+  labs(x = "Age first tried Marijunana",
+       y = "Number of People")
+```
+
+By using two different goems `geom_point()` and `geom_line()`, the graph we obtained shows much more information. 
+
+##### (B) Use of multiple aesthetics: Line 119
+##### (C) Layered graphics: Line 131
+
+```{r}
 demographic_20172018 %>%
   group_by(dmdfmsiz, ridreth3) %>%
   summarise(total = n()) %>%
@@ -87,16 +132,3 @@ druguse_20172018 %>%
        y = "Number of People")
 ```
 
-```{r}
-#(A) use of mulitple diiferent geoms Line 96
-druguse_20172018 %>%
-  group_by(duq210) %>%
-  summarise(total = n ()) %>%
-  ggplot(aes(x = duq210, y = total)) +
-  geom_point(stat = "identity") + geom_line() +
-  xlim(0,50) +
-  ylim(0,400) +
-  labs(x = "Age first tried Marijunana",
-       y = "Number of People")
-
-```
